@@ -4,19 +4,18 @@ import {
   getOneContact,
   deleteContact,
   createContact,
-  updateContact,
+  updateContactById
 } from "../controllers/contactsControllers.js";
+import validateBody from "../helpers/validateBody.js";
+import { createContactSchema, updateContactSchema } from "../schemas/contactsSchemas.js";
 
-const contactsRouter = express.Router();
+const router = express.Router();
 
-contactsRouter.get("/", getAllContacts);
+// Маршрути API
+router.get("/", getAllContacts);
+router.get("/:id", getOneContact);
+router.delete("/:id", deleteContact);
+router.post("/", validateBody(createContactSchema), createContact);
+router.put("/:id", validateBody(updateContactSchema), updateContactById);
 
-contactsRouter.get("/:id", getOneContact);
-
-contactsRouter.delete("/:id", deleteContact);
-
-contactsRouter.post("/", createContact);
-
-contactsRouter.put("/:id", updateContact);
-
-export default contactsRouter;
+export default router;
