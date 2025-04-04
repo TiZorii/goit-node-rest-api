@@ -1,4 +1,4 @@
-# **Topic 4. REST API**
+# ** REST API**
 
 Create a REST API for working with a collection of contacts. Use [Postman] to work with the REST API.
 
