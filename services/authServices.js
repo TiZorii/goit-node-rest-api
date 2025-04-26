@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import gravatar from 'gravatar';
 
 import HttpError from "../helpers/HttpError.js";
 
@@ -22,9 +23,11 @@ export const registerUser = async data => {
     throw HttpError(409, "Email in use")
   }
 
-  const hashPassword = await bcrypt.hash(password,10)
+  const hashPassword = await bcrypt.hash(password, 10)
+  
+  const avatarURL = gravatar.url(email, { s: '250', d: 'retro' }, true);
 
-  return User.create({...data, password: hashPassword});
+  return User.create({...data, password: hashPassword, avatarURL});
 }
 
 export const loginUser = async data => {
@@ -60,5 +63,14 @@ export const logoutUser = async id => {
     throw HttpError(404, "User not found");
   }
   await user.update({token: null})
-
 }
+
+export const updateUserAvatar = async (id, data) => {
+  const user = await User.findByPk(id);
+  if (!user) {
+    throw HttpError(404, 'User not found');
+  }
+
+  await user.update(data);
+  return user;
+};
