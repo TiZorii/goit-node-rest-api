@@ -24,12 +24,14 @@ const User = sequelize.define(
   token: {
     type: DataTypes.STRING
   },
-},
-{
-  tableName: 'users'
-});
+  avatarURL: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+}
+);
 
 
-// User.sync({after: true});
+// User.sync({alter: true});
 
 export default User;
