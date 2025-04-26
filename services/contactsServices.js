@@ -12,20 +12,18 @@ export const getContact = query => Contact.findOne({
 
 export const addContact = data => Contact.create(data);
   
-export const updateContact = async (id, data) => {
-  const contact = await getContactById(id);
+export const updateContact = async (query, data) => {
+  const contact = await getContact(query);
   if (!contact) return null;
-
   return contact.update(data, {
     returning: true,
   })
 }
   
-export const removeContact = async (id) => {
-  const contact = await getContactById(id);
+export const removeContact = async (query) => {
+  const contact = await getContact(query);
   if (!contact) return null;
-
-  await Contact.destroy({ where: { id } });
+  await Contact.destroy({ where: query });
   return contact;
 }
 

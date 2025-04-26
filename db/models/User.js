@@ -22,8 +22,7 @@ const User = sequelize.define(
     defaultValue: "starter"
   },
   token: {
-    type: DataTypes.STRING,
-    defaultValue: null,
+    type: DataTypes.STRING
   },
 },
 {
@@ -31,6 +30,6 @@ const User = sequelize.define(
 });
 
 
-// User.sync({force: true});
+// User.sync({after: true});
 
 export default User;

@@ -25,7 +25,25 @@ const loginController = async (req, res) => {
   })
 }
 
+const getCurrentController = (req, res) => {
+  const { email, subscription } = req.user;
+
+  res.json({
+    email,
+    subscription,
+  })
+}
+
+const logoutController = async (req, res) => {
+  const { id } = req.user;
+  await authServices.logoutUser(id);
+
+  res.status(204).send();
+}
+
 export default {
   registerController: ctrlWrapper(registerController),
   loginController: ctrlWrapper(loginController),
+  getCurrentController: ctrlWrapper(getCurrentController),
+  logoutController: ctrlWrapper(logoutController),
 }
