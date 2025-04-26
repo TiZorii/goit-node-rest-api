@@ -68,13 +68,13 @@ export const updateContactById = ctrlWrapper(async (req, res) => {
 export const updateContactStatusById = ctrlWrapper(async (req, res) => {
   const { id } = req.params;
   const { favorite } = req.body;
+  const { id: owner } = req.user;
 
   if (typeof favorite !== "boolean") {
     throw HttpError(400, "Missing field favorite");
   }
 
-  const updatedContact = await updateStatusContact(id, { favorite });
-
+  const updatedContact = await updateStatusContact({ id, owner }, { favorite });
   if (!updatedContact) {
     throw HttpError(404, "Not found");
   }
