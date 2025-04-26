@@ -27,9 +27,9 @@ export const removeContact = async (query) => {
   return contact;
 }
 
-export const updateStatusContact = async (id, body) => {
-  const contact = await Contact.findByPk(id);
+export const updateStatusContact = async (query, body) => {
+  const contact = await getContact(query);
   if (!contact) return null;
-  await contact.update(body); 
+  await contact.update(body);
   return contact;
 }
