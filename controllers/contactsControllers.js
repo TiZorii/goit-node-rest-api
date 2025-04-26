@@ -1,6 +1,6 @@
 import {
   listContacts,
-  getContactById,
+  getContact,
   removeContact,
   addContact,
   updateContact,
@@ -11,13 +11,15 @@ import HttpError from "../helpers/HttpError.js";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 
 export const getAllContacts = ctrlWrapper(async (req, res) => {
-  const contacts = await listContacts();
+  const {id: owner} = req.user;
+  const contacts = await listContacts({ owner });
   res.status(200).json(contacts);
 });
 
 export const getOneContact = ctrlWrapper(async (req, res) => {
   const { id } = req.params;
-  const contact = await getContactById(id);
+  const { id: owner } = req.user;
+  const contact = await getContact({id, owner});
 
   if (!contact) {
     throw HttpError(404, `Contact with id ${id} not found`);
@@ -38,10 +40,10 @@ export const deleteContact = ctrlWrapper(async (req, res) => {
 });
 
 export const createContact = ctrlWrapper(async (req, res) => {
-  const data = req.body;
-  const newContact = await addContact(data);
+  const {id: owner} = req.user;
+  const data = await addContact({ ...req.body, owner });
 
-  res.status(201).json(newContact);
+  res.status(201).json(data);
 });
 
 export const updateContactById = ctrlWrapper(async (req, res) => {

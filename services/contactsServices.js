@@ -1,8 +1,14 @@
 import Contact from "../db/models/Contact.js";
 
-export const listContacts = () => Contact.findAll();
+export const listContacts = query => Contact.findAll({
+  where: query
+});
   
 export const getContactById = id => Contact.findByPk(id);
+
+export const getContact = query => Contact.findOne({
+  where: query
+})
 
 export const addContact = data => Contact.create(data);
   

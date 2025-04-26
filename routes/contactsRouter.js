@@ -1,4 +1,7 @@
 import express from "express";
+
+import authenticate from "../middlewares/authenticate.js";
+
 import {
   getAllContacts,
   getOneContact,
@@ -15,6 +18,8 @@ import {
 } from "../schemas/contactsSchemas.js";
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.get("/", getAllContacts);
 router.get("/:id", getOneContact);
