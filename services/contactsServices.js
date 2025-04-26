@@ -1,8 +1,14 @@
 import Contact from "../db/models/Contact.js";
 
-export const listContacts = () => Contact.findAll();
+export const listContacts = query => Contact.findAll({
+  where: query
+});
   
 export const getContactById = id => Contact.findByPk(id);
+
+export const getContact = query => Contact.findOne({
+  where: query
+})
 
 export const addContact = data => Contact.create(data);
   
@@ -15,11 +21,13 @@ export const updateContact = async (id, data) => {
   })
 }
   
-export const removeContact = id => Contact.destroy({
-  where: {
-    id,
-  }
-})
+export const removeContact = async (id) => {
+  const contact = await getContactById(id);
+  if (!contact) return null;
+
+  await Contact.destroy({ where: { id } });
+  return contact;
+}
 
 export const updateStatusContact = async (id, body) => {
   const contact = await Contact.findByPk(id);
