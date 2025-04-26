@@ -1,6 +1,7 @@
 import express from "express";
 
 import authenticate from "../middlewares/authenticate.js";
+import upload from "../middlewares/upload.js";
 
 import {
   getAllContacts,
@@ -16,6 +17,7 @@ import {
   updateContactSchema,
   updateFavoriteSchema,
 } from "../schemas/contactsSchemas.js";
+import isEmptyBody from '../middlewares/isEmptyBody.js';
 
 const router = express.Router();
 
@@ -24,8 +26,8 @@ router.use(authenticate);
 router.get("/", getAllContacts);
 router.get("/:id", getOneContact);
 router.delete("/:id", deleteContact);
-router.post("/", validateBody(createContactSchema), createContact);
-router.put("/:id", validateBody(updateContactSchema), updateContactById);
+router.post("/", isEmptyBody, validateBody(createContactSchema), createContact);
+router.put("/:id", isEmptyBody, validateBody(updateContactSchema), updateContactById);
 router.patch("/:id/favorite", validateBody(updateFavoriteSchema), updateContactStatusById);
 
 export default router;
