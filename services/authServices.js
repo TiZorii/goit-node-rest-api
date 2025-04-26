@@ -48,8 +48,17 @@ export const loginUser = async data => {
   };
 
   const token = generateToken(payload)
-user.token = token;
-await user.save();
 
-return { token, user };
+  await user.update({token})
+
+  return { token, user };
+}
+
+export const logoutUser = async id => {
+  const user = await findUser({id});
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+  await user.update({token: null})
+
 }

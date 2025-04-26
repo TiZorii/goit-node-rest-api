@@ -20,7 +20,7 @@ const authenticate = async (req, res, next) => {
     return next (HttpError(401, "Not authorized"))
   }
   const user = await findUser({ id: payload.id });
-  if (!user) {
+  if (!user || !user.token) {
     return next(HttpError(401, "Not authorized"))
   }
   req.user = user;

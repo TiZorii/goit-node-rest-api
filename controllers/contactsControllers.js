@@ -30,7 +30,8 @@ export const getOneContact = ctrlWrapper(async (req, res) => {
 
 export const deleteContact = ctrlWrapper(async (req, res) => {
   const { id } = req.params;
-  const deletedContact = await removeContact(id);
+  const { id: owner } = req.user;
+  const deletedContact = await removeContact({ id, owner });
 
   if (!deletedContact) {
     throw HttpError(404, `Contact with id ${id} not found`);
@@ -48,13 +49,14 @@ export const createContact = ctrlWrapper(async (req, res) => {
 
 export const updateContactById = ctrlWrapper(async (req, res) => {
   const { id } = req.params;
+  const {id: owner} = req.user;
   const data = req.body;
 
   if (Object.keys(data).length === 0) {
     throw HttpError(400, "Body must have at least one field");
   }
 
-  const updatedContact = await updateContact(id, data);
+  const updatedContact = await updateContact({ id, owner }, data);
 
   if (!updatedContact) {
     throw HttpError(404, "Not found");
